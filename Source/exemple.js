@@ -1,10 +1,10 @@
 $(document).ready(function() {
     /* How to use */
-    /*This are the default values  */
+    /* This are the default values  */
     
     simpleCarousel({
         container: '.slider',       /* Container */
-        animationType 'slide',      /* Animation Type, can also be set to fade */
+        animationType: 'slide',     /* Animation Type, can also be set to fade */
         animation: 'easeInOutCirc', /* If you want to use easing functions, import the library and set the one you want */
         duration: 400,              /* Duration of the animation */
         timer: 3000,                /* Time between 2 automatic slides, if you don't want automatic animations set it to 0 */

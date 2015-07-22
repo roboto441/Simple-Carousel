@@ -12,9 +12,7 @@ function simpleCarousel(params) {
     if(!params['touchSensibility']) {params['touchSensibility'] = .03; }
     
     /* check if there is a container */
-    if (!$(params['container']).length) {
-        return;
-    }
+    if (!$(params['container']).length) { return; }
     
     /* CSS rules */
     loadCss(params['container'], params['customBtn'], params['customDots'],params['animationType']);
@@ -23,14 +21,17 @@ function simpleCarousel(params) {
     /* Get higher image */
     nbImg = $(params['container']).children('img').length;
     
-    var img = new Image();
-    img.onload = function() {
-        h = $(params['container'] + ' img').height();
-        $(params['container']).css('height', h);    
+    hMax = 0;
+    for(i=0; i<nbImg; i++) {
+        var img = $(params['container'] + ' img:nth-child('+ (i+1) +')')[0];
+        img.onload = function() {
+            h = $(this).height();
+            if(h > hMax) { hMax = h; }            
+            if(i == nbImg-1) { $(params['container']).css('height', hMax + 'px'); } 
+        }
     }
-    imgSrc = $(params['container'] + ' img').attr("src")
-    img.src = imgSrc;
     
+     
     /* HTML */
     var dots;
     if(params['dots']) {
@@ -199,7 +200,7 @@ function loadCss(container, customBtn, customDots, animationType) {
     var fade = '';
     if(animationType == 'fade') { fade = container + ' #next { left: 0; }' }
     
-    $('head').append('<style>' + container + ' { box-sizing: content-box; background-color: #000000; overflow: hidden; position: relative; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;}' + container + ' img { display: none; width: 100%; } '  + container + ' #last,' + container + ' #current,' + container + ' #next { height: 100%; width: 100%; position: absolute; top: 0; }' + container + ' #last img,' + container + ' #current img,' + container + ' #next img { display: block; position: relative; top: 50%; transform: translateY(-50%); }' + container + ' #last { left: -100% }' + container + ' #current { left: 0 }' + container + ' #next { left: 100% }' + buttons + dots + fade + '</style>');
+    $('head').append('<style>' + container + ' { box-sizing: content-box; background-color: #000000; overflow: hidden; position: relative; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;}' + container + ' img { display: none; width: 100%; } '  + container + ' #last,' + container + ' #current,' + container + ' #next { height: 100%; width: 100%; position: absolute; top: 0; }' + container + ' #last img,' + container + ' #current img,' + container + ' #next img { display: block; position: relative; top: 50%; transform: translateY(-50%);  -webkit-transform: translateY(-50%); }' + container + ' #last { left: -100% }' + container + ' #current { left: 0 }' + container + ' #next { left: 100% }' + buttons + dots + fade + '</style>');
 }
 
 function updateDots(params, nbImg, currentImg) {
